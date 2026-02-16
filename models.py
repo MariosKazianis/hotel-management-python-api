@@ -8,11 +8,11 @@ class Customer(SQLModel, table=True):
     email:str
 
 
-"""class Stay(SQLModel, table=True):
+class Stay(SQLModel, table=True):
     id:int | None = Field(default=None, primary_key=True)
-    customerId:int = Field(foreign_key="Customer.id")
+    customerId:int = Field(foreign_key="customer.id")
     roomNumber:int
     checkIn:datetime.date
     checkOut:datetime.date
     pricePerNight:float
-"""
+

@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from models import Customer
 from database import SessionDep
 from fastapi.middleware.cors import CORSMiddleware
+from sqlmodel import select
 
 app = FastAPI()
 
@@ -21,11 +22,11 @@ def on_startup():
     database.create_db_and_tables()
 
 @app.post(
-    "/customers/",
+    "/customers",
     summary="Create a customer",
     response_description="The created customer",
 )
-async def create_customer(customer: Customer , session: SessionDep) -> Customer:
+def create_customer(customer: Customer , session: SessionDep) -> Customer:
     """
     Create a customer.
     - **id**: Optional integer. Generated automatically by the database.
@@ -38,9 +39,8 @@ async def create_customer(customer: Customer , session: SessionDep) -> Customer:
     return customer
 
 
-@app.get("/customers/{customer_id}")
-def get_customer(customer_id: int, session: SessionDep):
-    customer = session.get(Customer, customer_id)
-    if not customer:
-        return {"error": "Customer not found"}
-    return customer
+@app.get("/customers")
+def view_customers( session: SessionDep):
+    statement= select(Customer)
+    results=session.exec(statement)
+    return results.all()
