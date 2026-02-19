@@ -1,4 +1,4 @@
-import datetime
+from datetime import date
 
 from sqlmodel import Field, SQLModel
 
@@ -8,11 +8,11 @@ class Customer(SQLModel, table=True):
     email:str
 
 
-class Stay(SQLModel, table=True):
+class Booking(SQLModel, table=True):
     id:int | None = Field(default=None, primary_key=True)
     customerId:int = Field(foreign_key="customer.id")
     roomNumber:int
-    checkIn:datetime.date
-    checkOut:datetime.date
+    checkIn:date
+    checkOut:date
     pricePerNight:float
 
